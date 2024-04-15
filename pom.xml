@@ -18,23 +18,39 @@
 
     <!-- Dependencies -->
     <dependencies>
+        <!-- use the tomee javaee-api, otherwise it could crash when using tomee-embededded -->
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>8.0</version>
+            <groupId>org.apache.tomee</groupId>
+            <artifactId>jakartaee-api</artifactId>
+            <version>9.1.1</version>
             <scope>provided</scope>
         </dependency>
+        <!-- tomee javaee-api required jsf-api additional -->
         <dependency>
-            <groupId>javax.faces</groupId>
-            <artifactId>jsf-api</artifactId>
-            <version>2.0</version>
+            <groupId>org.apache.myfaces.core</groupId>
+            <artifactId>myfaces-api</artifactId>
+            <version>3.0.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>13.0.0</version>
+            <classifier>jakarta</classifier>
         </dependency>
+        <dependency>
+            <groupId>org.primefaces.extensions</groupId>
+            <artifactId>primefaces-extensions</artifactId>
+            <version>13.0.0</version>
+            <classifier>jakarta</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -61,7 +77,7 @@
             <plugin>
                 <groupId>org.apache.tomee.maven</groupId>
                 <artifactId>tomee-embedded-maven-plugin</artifactId>
-                <version>8.0.14</version>
+                <version>9.1.2</version>
                 <configuration>
                     <httpPort>8080</httpPort>
                 </configuration>

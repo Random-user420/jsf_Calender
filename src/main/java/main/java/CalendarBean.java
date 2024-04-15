@@ -1,60 +1,46 @@
 package main.java;
 
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+import lombok.Getter;
+import lombok.Setter;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.event.schedule.ScheduleEntryMoveEvent;
 import org.primefaces.event.schedule.ScheduleRangeEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("rawtypes")
 @Named
 @ViewScoped
 public class CalendarBean implements Serializable {
 
+    @Getter
+    @Setter
     private ScheduleModel scheduleModel = new DefaultScheduleModel();
-    private int selectedYear;
 
     private List<String> selectedKalenders;
 
+    @Setter
+    @Getter
     private ScheduleEvent event = new DefaultScheduleEvent();
 
-    private List<ScheduleEvent> allEvents = new ArrayList<>();
+    private final List<ScheduleEvent> allEvents = new ArrayList<>();
 
-    public ScheduleEvent getEvent() {
-        return event;
-    }
 
+    @Setter
     private LocalDateTime tempValidation;
 
+    @Setter
     private boolean validationFailed;
-
-
-    public void setEvent(ScheduleEvent event) {
-        this.event = event;
-    }
-
-    // Getter und Setter für scheduleModel und selectedYear
-
-    public ScheduleModel getScheduleModel() {
-        return scheduleModel;
-    }
-
-    public void setScheduleModel(ScheduleModel scheduleModel) {
-        this.scheduleModel = scheduleModel;
-    }
 
     public void addEvent() {
         if (isValidationFailed()) {
@@ -63,11 +49,10 @@ public class CalendarBean implements Serializable {
         if (event.getId() == null) {
             scheduleModel.addEvent(event);
             getAllEvents().add(event);
-            event = new DefaultScheduleEvent();
         } else {
             scheduleModel.updateEvent(event);
-            event = new DefaultScheduleEvent();
         }
+        event = new DefaultScheduleEvent();
         updateViewCalenders();
     }
 
@@ -96,28 +81,28 @@ public class CalendarBean implements Serializable {
         scheduleModel.clear();
         if (selectedKalenders.contains("K1")) {
             for (ScheduleEvent _event : getAllEvents()) {
-                if (Objects.equals(_event.getData(), "K1")){
+                if (Objects.equals(_event.getData(), "K1")) {
                     scheduleModel.addEvent(_event);
                 }
             }
         }
         if (selectedKalenders.contains("K2")) {
             for (ScheduleEvent _event : getAllEvents()) {
-                if (Objects.equals(_event.getData(), "K2")){
+                if (Objects.equals(_event.getData(), "K2")) {
                     scheduleModel.addEvent(_event);
                 }
             }
         }
         if (selectedKalenders.contains("K3")) {
             for (ScheduleEvent _event : getAllEvents()) {
-                if (Objects.equals(_event.getData(), "K3")){
+                if (Objects.equals(_event.getData(), "K3")) {
                     scheduleModel.addEvent(_event);
                 }
             }
         }
         if (selectedKalenders.contains("K4")) {
             for (ScheduleEvent _event : getAllEvents()) {
-                if (Objects.equals(_event.getData(), "K4")){
+                if (Objects.equals(_event.getData(), "K4")) {
                     scheduleModel.addEvent(_event);
                 }
             }
@@ -128,15 +113,11 @@ public class CalendarBean implements Serializable {
         return allEvents;
     }
 
-    public void setAllEvents(List<ScheduleEvent> allEvents) {
-        this.allEvents = allEvents;
-    }
-
     public void validateEndDateInput(FacesContext context, UIComponent component, LocalDateTime value) {
         if (Objects.equals(getTempValidation(), null)) {
             setValidationFailed(true);
             context.validationFailed();
-        } else if(value.isBefore(getTempValidation())) {
+        } else if (value.isBefore(getTempValidation())) {
             setTempValidation(null);
             setValidationFailed(true);
             context.validationFailed();
@@ -154,15 +135,8 @@ public class CalendarBean implements Serializable {
         return tempValidation;
     }
 
-    public void setTempValidation(LocalDateTime tempValidation) {
-        this.tempValidation = tempValidation;
-    }
-
     public boolean isValidationFailed() {
         return validationFailed;
     }
 
-    public void setValidationFailed(boolean validationFailed) {
-        this.validationFailed = validationFailed;
-    }
 }
