@@ -30,7 +30,6 @@ public class CalendarBean implements Serializable {
     private ScheduleModel scheduleModel = new DefaultScheduleModel();
 
     @Getter
-    @Setter
     private List<String> selectedKalenders;
 
     @Setter
@@ -38,7 +37,6 @@ public class CalendarBean implements Serializable {
     private ScheduleEvent event = new DefaultScheduleEvent();
 
     @Getter
-    @Setter
     private final List<ScheduleEvent> allEvents = new ArrayList<>();
 
     @Getter
