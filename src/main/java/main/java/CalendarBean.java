@@ -115,14 +115,10 @@ public class CalendarBean implements Serializable {
 
     public void validateEndDateInput(FacesContext context, UIComponent component, LocalDateTime value) {
         if (Objects.equals(getTempValidation(), null)) {
-            setValidationFailed(true);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please enter valid Dates, with the end Date being after the start Date"));
-            context.validationFailed();
+            failValidation(context);
         } else if (value.isBefore(getTempValidation())) {
+            failValidation(context);
             setTempValidation(null);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please enter valid Dates, with the end Date being after the start Date"));
-            setValidationFailed(true);
-            context.validationFailed();
         } else {
             setTempValidation(null);
             setValidationFailed(false);
@@ -131,5 +127,11 @@ public class CalendarBean implements Serializable {
 
     public void validateStartDateInput(FacesContext context, UIComponent component, LocalDateTime value) {
         setTempValidation(value);
+    }
+
+    public void failValidation(FacesContext context) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please enter valid Dates, with the end Date being after the start Date"));
+        setValidationFailed(true);
+        context.validationFailed();
     }
 }

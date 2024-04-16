@@ -37,7 +37,8 @@
             <p:commandButton type="reset" value="Reset"/>
             <p:commandButton id="addButton" value="Save" action="#{calendarBean.addEvent}"
                              oncomplete="PF('myschedule').update();PF('eventDialog').hide()"
-                             onclick="PF('gr_msg').update()"/>
+                             onstart="PF('gr_msg').update()"/>
+            <p:growl id="gr_msg" showDetail="true"/>
         </h:panelGrid>
     </p:dialog>
 </ui:composition>
