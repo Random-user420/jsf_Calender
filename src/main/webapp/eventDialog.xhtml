@@ -36,7 +36,8 @@
             <p:colorPicker id="colorPicker" value="#{calendarBean.event.backgroundColor}"/>
             <p:commandButton type="reset" value="Reset"/>
             <p:commandButton id="addButton" value="Save" action="#{calendarBean.addEvent}"
-                             oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+                             oncomplete="PF('myschedule').update();PF('eventDialog').hide()"
+                             onclick="PF('gr_msg').update()"/>
         </h:panelGrid>
     </p:dialog>
 </ui:composition>

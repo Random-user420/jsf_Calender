@@ -1,5 +1,7 @@
 package main.java;
 
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
@@ -20,25 +22,30 @@ import java.util.List;
 import java.util.Objects;
 
 @Named
-@ViewScoped
+@SessionScoped
 public class CalendarBean implements Serializable {
 
     @Getter
     @Setter
     private ScheduleModel scheduleModel = new DefaultScheduleModel();
 
+    @Getter
+    @Setter
     private List<String> selectedKalenders;
 
     @Setter
     @Getter
     private ScheduleEvent event = new DefaultScheduleEvent();
 
+    @Getter
+    @Setter
     private final List<ScheduleEvent> allEvents = new ArrayList<>();
 
-
+    @Getter
     @Setter
     private LocalDateTime tempValidation;
 
+    @Getter
     @Setter
     private boolean validationFailed;
 
@@ -68,9 +75,6 @@ public class CalendarBean implements Serializable {
         setEvent(DefaultScheduleEvent.builder().startDate(selectRange.getStartDate()).endDate(selectRange.getEndDate()).build());
     }
 
-    public List<String> getSelectedKalenders() {
-        return selectedKalenders;
-    }
 
     public void setSelectedKalenders(List<String> selectedKalenders) {
         this.selectedKalenders = selectedKalenders;
@@ -109,16 +113,14 @@ public class CalendarBean implements Serializable {
         }
     }
 
-    public List<ScheduleEvent> getAllEvents() {
-        return allEvents;
-    }
-
     public void validateEndDateInput(FacesContext context, UIComponent component, LocalDateTime value) {
         if (Objects.equals(getTempValidation(), null)) {
             setValidationFailed(true);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please enter valid Dates, with the end Date being after the start Date"));
             context.validationFailed();
         } else if (value.isBefore(getTempValidation())) {
             setTempValidation(null);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please enter valid Dates, with the end Date being after the start Date"));
             setValidationFailed(true);
             context.validationFailed();
         } else {
@@ -130,13 +132,4 @@ public class CalendarBean implements Serializable {
     public void validateStartDateInput(FacesContext context, UIComponent component, LocalDateTime value) {
         setTempValidation(value);
     }
-
-    public LocalDateTime getTempValidation() {
-        return tempValidation;
-    }
-
-    public boolean isValidationFailed() {
-        return validationFailed;
-    }
-
 }
