@@ -22,12 +22,15 @@ import java.util.List;
 import java.util.Objects;
 
 @Named
-@SessionScoped
+@ViewScoped
 public class CalendarBean implements Serializable {
 
     @Getter
     @Setter
     private ScheduleModel scheduleModel = new DefaultScheduleModel();
+
+    @Getter
+    private EventDAO ev = new EventDAO();
 
     @Getter
     private List<String> selectedKalenders;
@@ -37,7 +40,7 @@ public class CalendarBean implements Serializable {
     private ScheduleEvent event = new DefaultScheduleEvent();
 
     @Getter
-    private final List<ScheduleEvent> allEvents = new ArrayList<>();
+    private final List<ScheduleEvent> allEvents = getEventsDatabase();
 
     @Getter
     @Setter
@@ -81,6 +84,7 @@ public class CalendarBean implements Serializable {
 
     public void updateViewCalenders() {
         scheduleModel.clear();
+        updateDatabse();
         if (selectedKalenders.contains("K1")) {
             for (ScheduleEvent _event : getAllEvents()) {
                 if (Objects.equals(_event.getData(), "K1")) {
@@ -131,5 +135,20 @@ public class CalendarBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please enter valid Dates, with the end Date being after the start Date"));
         setValidationFailed(true);
         context.validationFailed();
+    }
+
+    public ArrayList<ScheduleEvent> getEventsDatabase() {
+        return new ArrayList<ScheduleEvent>(getEv().getAllEvents());
+    }
+
+    public void updateDatabse() {
+        getEv().deleteEvents();
+        storeEvents();
+    }
+
+    public void storeEvents() {
+        for(ScheduleEvent event:getAllEvents()) {
+            getEv().createEvent(event);
+        }
     }
 }
